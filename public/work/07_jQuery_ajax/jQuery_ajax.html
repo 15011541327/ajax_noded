@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+</head>
+<body>
+	<input type="button" value="jQuery ajax() GET请求" id="ajaxGetBtn"/><br>
+	<input type="button" value="jQuery ajax() POST请求" id="ajaxPostBtn"/><br>
+	<input type="button" value="jQuery get()请求" id="getBtn"/><br>
+	<input type="button" value="jQuery post()请求" id="postBtn"/><br>
+	<input type="button" value="jQuery getJSON()请求" id="getJSONBtn"/><br>
+    <script type="text/javascript">
+        //jQuery ajax() GET请求
+        $("#ajaxGetBtn").click(function () {//使用ajax
+            $.ajax({
+                type:'GET',
+                url:'/ajax_node/test/get',
+                data:'username=shijun',
+                success:function(result){
+                    alert(result);
+                }
+            });
+        });
+            //jQuery ajax() POST请求
+            $("#ajaxPostBtn").click(function(){
+                $.ajax({
+                    type:'POST',
+                    url:'/ajax_node/test/post',
+                    data:{username:'tom',password:123},
+                    success:function (result) {
+                        alert(result);
+                    }
+                });
+            });
+            //jQuery get()请求
+            $("#getBtn").click(function () {
+                $.get('/ajax_node/test/get','username=xinxin',function (result) {
+                    alert(result);
+                });
+                $.get('/ajax_node/test/json', function (result) {
+                    alert(result);
+                }, 'json'); //指定json类型jQuery会自动将返回的json数据解析为js的对象/数组
+            });
+            //jQuery post()请求
+            $("#postBtn").click(function () {
+                $.post('/ajax_node/test/post', 'username=Jack3&password=54321', function (result) {
+                    alert(result);
+                });
+            });
+            $("#getJSONBtn").click(function () {
+                $.getJSON('/ajax_node/test/json',function (result) {
+                    alert(result);
+                })
+            })
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<select id="selProvince">
+  <option value="">--请选择省份--</option>
+</select>
+<select id="selCity">
+  <option value="">--请选择城市--</option>
+</select>
+<select id="selCounty">
+  <option value="">--请选择区/县--</option>
+</select>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var $selProvince = $("#selProvince");
+        var $selCity = $("#selCity");
+        var $selCounty = $("#selCounty");
+        //发送ajax请求，得到所有省的数据，并显示出来
+        $.getJSON('/ajax_node/demo/getProvinces',function (provinces) {
+            //根据provinces生成多个<option value="id">province</option>，添加到$selProvince
+            provinces.forEach(function (item) {
+                $selProvince.append("<option value='"+item.id+"'>"+item.province+"</option>");
+            })
+        });
+        //当省变化时，cities生成多个<option value="id">City</option>，添加到$selCity
+        $selProvince.change(function () {
+            //删除自己和County中的所有<option>(第一个除外)
+            $selCity.children(':not(:first)').remove();
+            $selCounty.children(':not(:first)').remove();
+
+            //得到省的id
+            var pid = this.value;
+            //如果选择的是第一个，不发送请求
+            if(pid == ''){
+                return;
+            }
+            $.getJSON('/ajax_node/demo/getCities',{pid:pid},function (cities) {
+                cities.forEach(function (item) {
+                    $selCity.append("<option value='"+item.id+"'>"+item.city+"</option>");
+                })
+            })
+        });
+
+        //当City变化时.County生成多个<option value='id'>County</option>,添加到$selCounty
+        $selCity.change(function () {
+            //删除County中的所有<option>，第一个除外
+            $selCounty.children(':not(:first)').remove();
+            //得到市的cid,如果选择的是第一个，不发送请求
+            var cid =this.value;
+            if(cid == ''){
+                return;
+            }
+            //发送ajax请求，得到返回数据，并显示出来
+            $.getJSON('/ajax_node/demo/getCountys',{cid:cid},function (Countys) {
+                Countys.forEach(function (item) {
+                    $selCounty.append("<option value='"+item.id+"'>"+item.county+"</option>");
+                })
+            })
+
+        })
+
+
+
+    })
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

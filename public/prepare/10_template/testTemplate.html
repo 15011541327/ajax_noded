@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<select id="selProvince">
+    <option value="">--请选择省份--</option>
+</select>
+
+<script id="provinces" type="text/html">
+    <option value="">--请选择省份--</option>
+    <ul>
+        {{each provinces as value}}
+            <option value="{{value.id}}">{{value.province}}</option>
+        {{/each}}
+    </ul>
+</script>
+
+<select id="selCity">
+  <option value="">--请选择城市--</option>
+</select>
+
+<script id="citys" type="text/html">
+    <option value="">--请选择省份--</option>
+    <ul>
+        {{each citys as value}}
+        <option value="{{value.id}}">{{value.city}}</option>
+        {{/each}}
+    </ul>
+</script>
+
+<select id="selCounty">
+  <option value="">--请选择区/县--</option>
+</select>
+
+<script id="countys" type="text/html">
+    <option value="">--请选择省份--</option>
+    <ul>
+        {{each countys as value}}
+        <option value="{{value.id}}">{{value.county}}</option>
+        {{/each}}
+    </ul>
+</script>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="template.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var $province = $("#selProvince");
+        var $selCity = $("#selCity");
+        var $selCounty = $("#selCounty");
+
+        $.post('/node_ajax/demo/province', function (provinces) {
+            var html = template('provinces', {provinces : provinces});
+            $province.html(html);
+        }, 'json');
+
+        $province.change(function () {
+
+
+            $selCity.children('option:not(:first)').remove();
+            $selCounty.children('option:not(:first)').remove();
+
+            var pid = this.value;
+            if(pid==='') {
+                return;
+            }
+
+            $.post('/node_ajax/demo/city', {pid:pid}, function (citys) {
+                var html = template('citys', {citys : citys});
+                $selCity.html(html);
+            }, 'json');
+        });
+
+        $selCity.change(function () {
+            $selCounty.children('option:not(:first)').remove();
+
+            var cid = this.value;
+            if(cid==='') {
+                return;
+            }
+
+            $.post('/node_ajax/demo/county', {cid:cid}, function (countys) {
+                var html = template('countys', {countys : countys});
+                $selCounty.html(html);
+            }, 'json');
+        });
+    });
+</script>
+</body>
+</html>

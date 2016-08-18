@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+	<input type="button" value="jQuery ajax() GET请求" id="ajaxGetBtn"/><br>
+	<input type="button" value="jQuery ajax() POST请求" id="ajaxPostBtn"/><br>
+	<input type="button" value="jQuery get()请求" id="getBtn"/><br>
+	<input type="button" value="jQuery post()请求" id="postBtn"/><br>
+	<input type="button" value="jQuery getJSON()请求" id="getJSONBtn"/><br>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#ajaxGetBtn').click(function () {
+            $.ajax({
+                method : 'GET',
+                url : '/node_ajax/test/get',
+                data : {username : 'tom2'},
+                success : function (result) {
+                    alert(result);
+                },
+                error : function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
+        $('#ajaxPostBtn').click(function () {
+            $.ajax({
+                method : 'POST',
+                url : '/node_ajax/test/post',
+                data : {username : 'tom3', password : 'abc123'},
+                success : function (result) {
+                    alert(result);
+                }
+            });
+        });
+
+        $('#getBtn').click(function () {
+            $.get('/node_ajax/test/get', {username : 'tom4'}, function (result) {
+                alert(result);
+            });
+        });
+
+        $('#postBtn').click(function () {
+            $.post('/node_ajax/test/post', {username : 'tom5', password: 'atguigu'}, function (result) {
+                alert(result);
+            });
+        });
+
+        $('#getJSONBtn').click(function () {
+            $.getJSON('/node_ajax/test/json', function (result) {
+                alert(result);
+            });
+        });
+    });
+</script>
+</body>
+</html>

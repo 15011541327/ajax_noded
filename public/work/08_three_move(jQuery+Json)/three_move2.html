@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>尚硅谷HTML5</title>
+
+    <style type="text/css">
+        /** 添加样式 **/
+    </style>
+    <script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+</head>
+<body>
+<select name="selProvince" id="selProvince">
+    <option value="">--请选择省份--</option>
+</select>
+<select name="selCity" id="selCity">
+    <option value="">--请选择市--</option>
+</select>
+<select name="selCounty" id="selCounty">
+    <option value="">--请选择区/县--</option>
+</select>
+
+<script type="text/javascript">
+    var $selProvince = $("#selProvince");
+    var $selCity = $("#selCity");
+    var $selCounty = $("#selCounty");
+
+    //发送ajax请求，获取数据，显示在页面中
+    $.getJSON('/ajax_node/demo/getProvince',function (provinces) {
+        provinces.forEach(function (item) {
+            $selProvince.append('<option value="'+item.id+'">'+item.province+'</option>')
+        });
+    });
+    //根据省的改变，市也跟着变化
+    $selProvince.change(function () {
+        //删除上一次选的City和County,第一个除外
+        $selCity.children(':not(:first)').remove();
+        $selCounty.children(':not(:first)').remove();
+        //获取省的id
+        var pid = this.value;
+        //发送ajax请求，获取cities，显示在页面中
+        $.getJSON('/ajax_node/demo/getCity',{pid:pid},function (cities) {
+            cities.forEach(function (item) {
+                $selCity.append('<option value="'+item.id+'">'+item.city+'</option>')
+            })
+        })
+    });
+    //根据市的变化，县也跟着变化
+    $selCity.change(function () {
+        //删除上次County的内容，第一个除外
+        $selCounty.children(':not(:first)').remove();
+        //获取市的id
+        var cid = this.value;
+        //发送ajax请求，获取数据，显示页面中
+        $.getJSON('/ajax_node/demo/getCounty',{cid:cid},function (Countys) {
+            Countys.forEach(function (item) {
+                $selCounty.append('<option value="'+item.id+'">'+item.county+'</option>')
+            })
+        })
+    })
+</script>
+</body>
+</html>

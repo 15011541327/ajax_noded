@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<select id="selProvince">
+  <option value="">--请选择省份--</option>
+</select>
+<select id="selCity">
+  <option value="">--请选择城市--</option>
+</select>
+<select id="selCounty">
+  <option value="">--请选择区/县--</option>
+</select>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var $province = $("#selProvince");
+        var $selCity = $("#selCity");
+        var $selCounty = $("#selCounty");
+
+        $.post('/node_ajax/demo/province', function (provinces) {
+            $.each(provinces,function (index, item) {
+                var option = '<option value="'+item.id+'">'+item.province+'</option>';
+                $province.append(option);
+            });
+        }, 'json');
+
+        $province.change(function () {
+
+
+            $selCity.children('option:not(:first)').remove();
+            $selCounty.children('option:not(:first)').remove();
+
+            var pid = this.value;
+            if(pid==='') {
+                return;
+            }
+
+            $.post('/node_ajax/demo/city', {pid:pid}, function (citys) {
+                $.each(citys,function (index, item) {
+                    var option = '<option value='+item.id+'>'+item.city+'</option>';
+                    $selCity.append(option);
+                });
+            }, 'json');
+        });
+
+        $selCity.change(function () {
+            $selCounty.children('option:not(:first)').remove();
+
+            var cid = this.value;
+            if(cid==='') {
+                return;
+            }
+
+            $.post('/node_ajax/demo/county', {cid:cid}, function (countys) {
+                $.each(countys,function (index, item) {
+                    var option = '<option value='+item.id+'>'+item.county+'</option>';
+                    $selCounty.append(option);
+                });
+            }, 'json');
+        });
+    });
+</script>
+</body>
+</html>
